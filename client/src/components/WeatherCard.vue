@@ -3,7 +3,7 @@
     <div class="search">
       <input
         type="text"
-        v-model="city"
+        v-model="searchedCity"
         placeholder="Search"
         class="search-bar"
       />
@@ -46,7 +46,8 @@ export default {
   },
   data() {
     return {
-      city: "Islamabad",
+      city: "",
+      searhedCity: "islamabad",
       weatherMain: "",
       temp: "",
       pressure: "",
@@ -58,11 +59,20 @@ export default {
   },
   methods: {
     async getData() {
-      console.log("Before Sending Request");
+      const cityName = this.searchedCity ? this.searchedCity : "islamabad";
       try {
-        const response = await axios.post("http://localhost:5000/weather", {
-          city,
-        });
+        const response = await axios.post(
+          "http://localhost:5001/weather",
+          {
+            cityName,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        console.log(response);
         const { city, temp, speed, humidity, description } = response.data;
         this.city = city;
         this.temp = temp;
@@ -70,9 +80,14 @@ export default {
         this.speed = speed;
         this.description = description;
       } catch (err) {
-        console.log(err);
+        alert(err.response.data);
+        alert("Redirecting to Login Page");
+        this.$router.push("/login");
       }
     },
+  },
+  mounted() {
+    this.getData();
   },
 };
 </script>

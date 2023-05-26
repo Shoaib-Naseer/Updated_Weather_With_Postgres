@@ -1,17 +1,14 @@
 <template>
   <div id="app">
-    <WeatherCard city="Islamabad" />
+    <router-view></router-view>
+    <!-- <WeatherCard city="Islamabad" /> -->
   </div>
 </template>
 
 <script>
-import WeatherCard from "./components/WeatherCard.vue";
-
 export default {
   name: "App",
-  components: {
-    WeatherCard,
-  },
+  components: {},
 };
 </script>
 

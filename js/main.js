@@ -28,7 +28,6 @@ let weather = {
           this.apiKey
       );
       const data = await response.json();
-      console.log(data);
       this.displayWeather(data);
     } catch (error) {
       console.log(error);

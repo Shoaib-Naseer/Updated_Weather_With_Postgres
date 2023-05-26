@@ -2,11 +2,13 @@ const axios = require("axios");
 const weather = require("../models/weather");
 
 exports.fetchWeather = async (req, res) => {
-  const { city } = req.body;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=69259004c2ebac362b71a19cefe024b6`;
+  const { cityName } = req.body;
+  console.log(cityName);
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=69259004c2ebac362b71a19cefe024b6`;
   try {
-    const response = await axios.get(url);
 
+    
+    const response = await axios.get(url);
     const data = response.data; // Extract the data property from the response object
     const { name: city } = data;
     const { icon, description } = data.weather[0];

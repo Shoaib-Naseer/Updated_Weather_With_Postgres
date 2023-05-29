@@ -1,28 +1,32 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-
-const weatherSchema = new Schema({
-  city: {
-    type: String,
-  },
-  icon: {
-    type: String,
-  },
-  description: {
-    type: String,
-  },
-  temp: {
-    type: String,
-  },
-  pressure: {
-    type: String,
-  },
-  humidity: {
-    type: String,
-  },
-  speed: {
-    type: String,
-  },
+const { DataTypes ,Sequelize} = require('sequelize');
+const sequelize = new Sequelize("weather", "shoaib", "1234", {
+  host: "localhost",
+  dialect: "postgres",
 });
 
-module.exports = mongoose.model("Weather", weatherSchema);
+const Weather = sequelize.define('Weather', {
+  city: {
+    type: DataTypes.STRING,
+  },
+  icon: {
+    type: DataTypes.STRING,
+  },
+  description: {
+    type: DataTypes.STRING,
+  },
+  temp: {
+    type: DataTypes.STRING,
+  },
+  pressure: {
+    type: DataTypes.STRING,
+  },
+  humidity: {
+    type: DataTypes.STRING,
+  },
+  speed: {
+    type: DataTypes.STRING,
+  },
+  tableName: 'Weather'
+});
+
+module.exports = Weather;

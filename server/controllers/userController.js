@@ -1,28 +1,27 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/generateToken");
-const { default: mongoose } = require("mongoose");
+const { sequelize } = require("../config/database");
 
 exports.registerUser = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ where: { email } });
     if (userExists) {
       res.status(400).json({ error: "Email is already in use" });
       return;
     } else {
       const salt = await bcrypt.genSalt(10);
       const newPassword = await bcrypt.hash(password, salt);
-      const newUser = new User({
+      const newUser = await User.create({
         firstName,
         lastName,
         email,
         password: newPassword,
       });
-      await newUser.save();
       if (newUser) {
         res.status(200).json({
-          _id: newUser._id,
+          id: newUser.id,
           firstName: newUser.firstName,
           lastName: newUser.lastName,
           email: newUser.email,
@@ -41,15 +40,14 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: { email } });
     const match = await bcrypt.compare(password, user.password);
 
     if (user && match) {
-      const { _doc } = user;
-      const { password, ...others } = _doc;
+      const { password, ...others } = user.toJSON();
       res.json({
         ...others,
-        token: generateToken(user._id),
+        token: generateToken(user.id),
       });
     } else {
       res.status(400).json({ error: "Invalid user email or password" });
@@ -63,7 +61,7 @@ exports.loginUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}).select("-password");
+    const users = await User.findAll({ attributes: { exclude: ["password"] } });
     res.json(users);
     return;
   } catch (err) {
@@ -75,11 +73,11 @@ exports.getAllUsers = async (req, res) => {
 exports.getUserById = async (req, res) => {
   const userId = req.params.id;
   try {
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
+    if (!sequelize.Validator.isNumeric(userId)) {
       res.status(400).json({ error: "Invalid user Id" });
       return;
     }
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findByPk(userId , {attributes:{exclude:['password']}})
     if (user) {
       res.json(user);
     } else {
@@ -94,14 +92,14 @@ exports.getUserById = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   const userId = req.params.id;
   try {
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
+    if (!sequelize.Validator.isNumeric(userId)) {
       res.status(400).json({ error: "Invalid user Id" });
       return;
     }
-    const user = await User.findById(userId);
+    const user = await User.findByPk(userId);
 
     if (user) {
-      await User.deleteOne({ _id: req.params.id });
+      await user.destroy()
       res.json({ message: "User deleted" });
     } else {
       res.status(404).json({ error: "User does not exist" });
@@ -114,14 +112,15 @@ exports.deleteUser = async (req, res) => {
 exports.updatePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const user = await User.findById(req.params.id);
+    const userId = req.params.id;
+    const user = await User.findByPk(userId);
     const match = await bcrypt.compare(currentPassword, user.password);
 
     if (match) {
       const salt = await bcrypt.genSalt(10);
       let hashedPassword = await bcrypt.hash(newPassword, salt);
 
-      await User.findByIdAndUpdate(req.params.id, { password: hashedPassword });
+      await user.update({password:hashedPassword})
 
       res.json({ message: "Password update successful" });
     } else {

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "shoaib",
+    "password": "1234",
+    "database": "weather",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "shoaib",
+    "password": "1234",
+    "database": "weather",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "shoaib",
+    "password": "1234",
+    "database": "weather",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

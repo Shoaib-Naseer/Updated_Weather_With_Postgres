@@ -1,15 +1,22 @@
-const mongoose = require("mongoose");
+const { Sequelize } = require("sequelize");
+const sequelize = new Sequelize("weather", "shoaib", "1234", {
+  host: "localhost",
+  dialect: "postgres",
+});
 
 const connectDatabase = async () => {
   try {
-    const data = await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: false,
-    });
-    console.log(`Mongodb  connected with Server : ${data.connection.host}`);
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
   } catch (error) {
-    console.log("Error While Connecting to Mongodb Server", error);
+    console.error("Unable to connect to the database:", error);
   }
+
+  await sequelize.sync({ force: true });
+  console.log("All models were synchronized successfully.");
 };
 
-module.exports = connectDatabase;
+module.exports = {
+  sequelize,
+  connectDatabase,
+};

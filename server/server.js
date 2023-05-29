@@ -23,7 +23,7 @@ client.on("connect", () => {
 });
 
 const fetchWeatherAndPublish = async () => {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=islamabad&units=metric&appid=69259004c2ebac362b71a19cefe024b6`;
+  const url = process.env.WEATHER_API
   try {
     const response = await axios.get(url);
     const data = response.data;

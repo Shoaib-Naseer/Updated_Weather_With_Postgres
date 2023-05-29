@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const { fetchWeather } = require("../controllers/weatherController");
+const { getWeather } = require("../controllers/weatherController");
 const authenticateToken = require("../middleware/auth");
 
-router.post("/", authenticateToken, fetchWeather);
+router.get("/",getWeather);
 
 module.exports = router;

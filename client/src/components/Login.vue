@@ -32,8 +32,9 @@ export default {
   },
   methods: {
     async submitForm() {
+      console.log(this.email,this.password)
       try {
-        const response = await axios.post("http://localhost:5001/user/login", {
+        const response = await axios.post("http://localhost:5000/user/login", {
           email: this.email,
           password: this.password,
         });

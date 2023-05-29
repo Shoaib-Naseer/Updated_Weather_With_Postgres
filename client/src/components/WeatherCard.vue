@@ -3,7 +3,7 @@
     <div class="search">
       <input
         type="text"
-        v-model="searchedCity"
+        
         placeholder="Search"
         class="search-bar"
       />
@@ -47,7 +47,6 @@ export default {
   data() {
     return {
       city: "",
-      searhedCity: "islamabad",
       weatherMain: "",
       temp: "",
       pressure: "",
@@ -59,20 +58,16 @@ export default {
   },
   methods: {
     async getData() {
-      const cityName = this.searchedCity ? this.searchedCity : "islamabad";
       try {
-        const response = await axios.post(
-          "http://localhost:5001/weather",
-          {
-            cityName,
-          },
+        const response = await axios.get(
+          "http://localhost:5000/weather",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
-        console.log(response);
+        console.log(response.data)
         const { city, temp, speed, humidity, description } = response.data;
         this.city = city;
         this.temp = temp;

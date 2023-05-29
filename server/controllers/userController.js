@@ -41,22 +41,26 @@ exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
-    const match = await bcrypt.compare(password, user.password);
-
-    if (user && match) {
-      const { password, ...others } = user.toJSON();
-      res.json({
-        ...others,
-        token: generateToken(user.id),
-      });
+  
+    if (user) {
+      const match = await bcrypt.compare(password, user.password);
+  
+      if (match) {
+        const { password: _, ...others } = user.toJSON();
+        res.json({
+          ...others,
+          token: generateToken(user.id),
+        });
+      } else {
+        res.status(400).json({ error: "Invalid user email or password" });
+      }
     } else {
       res.status(400).json({ error: "Invalid user email or password" });
-      return;
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
-    return;
   }
+  
 };
 
 exports.getAllUsers = async (req, res) => {

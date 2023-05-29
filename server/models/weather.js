@@ -26,7 +26,6 @@ const Weather = sequelize.define('Weather', {
   speed: {
     type: DataTypes.STRING,
   },
-  tableName: 'Weather'
 });
 
 module.exports = Weather;

@@ -46,7 +46,7 @@ export default {
     async submitForm() {
       try {
         const response = await axios.post(
-          "http://localhost:5001/user/register",
+          "http://localhost:5000/user/register",
           {
             firstName: this.firstName,
             lastName: this.lastName,

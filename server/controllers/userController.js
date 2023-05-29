@@ -4,10 +4,8 @@ const generateToken = require("../utils/generateToken");
 const { default: mongoose } = require("mongoose");
 
 exports.registerUser = async (req, res) => {
-  console.log(req.body);
   try {
     const { firstName, lastName, email, password } = req.body;
-    console.log(firstName, lastName, email, password);
     const userExists = await User.findOne({ email });
     if (userExists) {
       res.status(400).json({ error: "Email is already in use" });
@@ -35,7 +33,6 @@ exports.registerUser = async (req, res) => {
       }
     }
   } catch (err) {
-    console.log(err.message);
     res.status(500).json({ error: err.message });
     return;
   }
@@ -90,7 +87,6 @@ exports.getUserById = async (req, res) => {
       return;
     }
   } catch (err) {
-    console.log("Error While Getting Error :", err);
     res.status(500).json({ error: err.message });
   }
 };

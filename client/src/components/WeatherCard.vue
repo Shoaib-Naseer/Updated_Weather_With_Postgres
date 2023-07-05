@@ -1,12 +1,7 @@
 <template>
   <div class="card">
     <div class="search">
-      <input
-        type="text"
-        
-        placeholder="Search"
-        class="search-bar"
-      />
+      <input type="text" placeholder="Search" class="search-bar" />
       <button @click="getData">
         <svg
           stroke="currentColor"
@@ -37,6 +32,7 @@
 </template>
 
 <script>
+import { client } from "@/assets/mqttConnection";
 import axios from "axios";
 
 export default {
@@ -59,15 +55,11 @@ export default {
   methods: {
     async getData() {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/weather",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        console.log(response.data)
+        const response = await axios.get("http://localhost:5000/weather", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         const { city, temp, speed, humidity, description } = response.data;
         this.city = city;
         this.temp = temp;
@@ -83,6 +75,17 @@ export default {
   },
   mounted() {
     this.getData();
+    
+    client.on("message", (topic, message) => {
+      console.log(topic)
+      const { city, temp, speed, humidity, description } = JSON.parse(message.toString());
+      this.city = city;
+      this.temp = temp;
+      this.humidity = humidity;
+      this.speed = speed;
+      this.description = description;
+      console.log(JSON.parse(message.toString()));
+    });
   },
 };
 </script>
@@ -103,6 +106,7 @@ export default {
   margin: 1em;
   border-radius: 30px;
 }
+
 .search {
   display: flex;
   align-items: center;
@@ -119,6 +123,7 @@ export default {
   color: #fff;
   width: calc(100% - 100px);
 }
+
 button {
   color: white;
   margin: 0.5em;

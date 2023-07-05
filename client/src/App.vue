@@ -6,9 +6,16 @@
 </template>
 
 <script>
+import { connectMqttClient, subscribeTopic } from './assets/mqttConnection';
+import topic from './assets/mqttconstants';
+
 export default {
   name: "App",
   components: {},
+  mounted() {
+    connectMqttClient();
+    subscribeTopic(topic, 0);
+  }
 };
 </script>
 

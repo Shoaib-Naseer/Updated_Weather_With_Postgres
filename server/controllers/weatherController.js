@@ -1,16 +1,16 @@
 const Weather = require("../models/weather");
+
 exports.getWeather = async (req, res) => {
   try {
-    // Query the latest weather data from the database
-    const weatherData = await Weather.findOne({
+    // Fetch the latest weather data from the database
+    const latestWeatherData = await Weather.findOne({
+      where : {
+        city:'Islamabad'
+      },
       order: [["createdAt", "DESC"]],
     });
 
-    if (!weatherData) {
-      return res.status(404).json({ message: "Weather data not found" });
-    }
-
-    res.status(200).json(weatherData);
+    res.status(200).json(latestWeatherData);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

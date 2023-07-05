@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     async submitForm() {
-      console.log(this.email,this.password)
       try {
         const response = await axios.post("http://localhost:5000/user/login", {
           email: this.email,
@@ -44,6 +43,8 @@ export default {
           // Save the token in local storage or as a cookie
           localStorage.setItem("token", token);
           alert("Login successful You'll be Redirected to Main Weather App");
+
+          
           this.$router.push("/weather");
         } else {
           alert("Login failed");
@@ -61,13 +62,13 @@ export default {
   margin-bottom: 20px;
 }
 
-.form-group > label {
+.form-group>label {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 8px;
 }
 
-.form-group > input {
+.form-group>input {
   width: 100%;
   padding: 10px;
   border: none;
@@ -77,7 +78,7 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.form-group > input:focus {
+.form-group>input:focus {
   outline: none;
   background-color: #e0e0e0;
 }

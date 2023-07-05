@@ -12,7 +12,7 @@ const connectDatabase = async () => {
     console.error("Unable to connect to the database:", error);
   }
 
-  await sequelize.sync({ force: true });
+  await sequelize.sync({ force: true});
   console.log("All models were synchronized successfully.");
 };
 

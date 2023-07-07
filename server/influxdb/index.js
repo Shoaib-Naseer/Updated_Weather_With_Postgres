@@ -6,7 +6,7 @@ require("dotenv").config();
 const org = process.env.INFLUX_ORG;
 const bucket = process.env.INFLUX_BUCKET;
 
-let influxDB = connectInfluxDB();
+const influxDB = connectInfluxDB();
 
 const writeApi = influxDB.getWriteApi(org, bucket);
 
@@ -28,10 +28,7 @@ function storeWeatherData(weatherData) {
   // Write the data point
   writeApi.writePoint(point);
 
-  writeApi.flush().then(() => {
-    console.log(` ${point}`);
-    console.log("WRITE FINISHED");
-  });
+  writeApi.flush()
 }
 
 const queryApi = influxDB.getQueryApi(org);
@@ -49,11 +46,11 @@ async function queryLatestWeatherData() {
         |> drop(columns: ["_time", "_start", "_stop", "_measurement"])
     `;
 
-    const result = [];
+    let result ;
 
     for await (const { values, tableMeta } of queryApi.iterateRows(fluxQuery)) {
       const rowObject = tableMeta.toObject(values);
-      result.push(rowObject);
+      result = rowObject;
     }
 
     return result;

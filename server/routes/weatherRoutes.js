@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const { getWeather } = require("../controllers/weatherController");
-const authenticateToken = require("../middleware/auth");
+// const authenticateToken = require("../middleware/auth");
 
-router.get("/", authenticateToken, getWeather);
+router.get("/",  getWeather);
 
 module.exports = router;

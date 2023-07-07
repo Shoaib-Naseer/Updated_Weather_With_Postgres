@@ -1,4 +1,4 @@
-const { weatherTopics } = require("./mqttConnection");
+const { weatherTopics } = require("./mqtt/mqttConnection");
 
 const topic = weatherTopics[0]
 

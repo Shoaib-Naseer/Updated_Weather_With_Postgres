@@ -1,4 +1,4 @@
-const { queryApi, writeApi } = require("./influxApi");
+const { queryApi, writeApi } = require("../../utils/influx/influxApi");
 const { Point } = require("@influxdata/influxdb-client");
 
 exports.queryData = async (query) => {
@@ -7,7 +7,6 @@ exports.queryData = async (query) => {
     for await (const { values, tableMeta } of queryApi.iterateRows(query)) {
       result = tableMeta.toObject(values);
     }
-    console.log("After ");
     return result;
   } catch (error) {
     // Logging Errors on Console

@@ -31,7 +31,8 @@ function storeWeatherData(weatherData) {
 // Query the latest weather data
 async function queryLatestWeatherData() {
   try {
-    await queryData(query);
+    const result =  await queryData(query);
+    return result;
   } catch (error) {
     console.error("Error querying latest weather data:", error);
   }

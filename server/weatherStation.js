@@ -1,5 +1,5 @@
 const { default: axios } = require("axios");
-const { publishWeatherData } = require("./utils/mqttConnection");
+const { publishWeatherData } = require("./utils/mqtt/mqttConnection");
 
 const fetchWeatherAndPublish = async (url, topic) => {
   try {

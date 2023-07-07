@@ -1,10 +1,10 @@
 const express = require("express");
-const { connectDatabase } = require("./config/database");
+const { connectDatabase } = require("./utils/database");
 const userRoutes = require("./routes/userRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
 const cors = require("cors");
 const fetchWeatherAndPublish = require("./weatherStation");
-const { connectMqttClient, subscribeTopic } = require("./utils/mqttConnection");
+const { connectMqttClient, subscribeTopic } = require("./utils/mqtt/mqttConnection");
 const topic = require("./utils/constants");
 const { weatherApi, port: PORT } = require("./config");
 

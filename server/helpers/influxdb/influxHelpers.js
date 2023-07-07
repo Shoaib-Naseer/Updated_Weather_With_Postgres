@@ -2,7 +2,6 @@ const { queryApi, writeApi } = require("./influxApi");
 const { Point } = require("@influxdata/influxdb-client");
 
 exports.queryData = async (query) => {
-  console.log(query);
   try {
     var result;
     for await (const { values, tableMeta } of queryApi.iterateRows(query)) {

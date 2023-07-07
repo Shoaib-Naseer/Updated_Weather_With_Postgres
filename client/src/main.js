@@ -11,7 +11,7 @@ const router = createRouter({
   routes: [
     { path: "/weather", component: WeatherCard },
     { path: "/signup", component: Signup },
-    { path: "/login", component: Login }
+    { path: "/login", component: Login },
   ],
 });
 

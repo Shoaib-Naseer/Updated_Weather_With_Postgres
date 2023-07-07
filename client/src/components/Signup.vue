@@ -52,7 +52,7 @@ export default {
             lastName: this.lastName,
             email: this.email,
             password: this.password,
-          }
+          },
         );
         console.log(response.data);
         if (response.data) {

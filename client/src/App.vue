@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import { connectMqttClient, subscribeTopic } from './assets/mqttConnection';
-import topic from './assets/mqttconstants';
+import { connectMqttClient, subscribeTopic } from "./assets/mqttConnection";
+import topic from "./assets/mqttconstants";
 
 export default {
   name: "App",
@@ -15,7 +15,7 @@ export default {
   mounted() {
     connectMqttClient();
     subscribeTopic(topic, 0);
-  }
+  },
 };
 </script>
 

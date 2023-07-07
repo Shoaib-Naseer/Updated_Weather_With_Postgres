@@ -60,7 +60,13 @@ export default {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        const { city, temperature: temp, speed, humidity, description } = response.data;
+        const {
+          city,
+          temperature: temp,
+          speed,
+          humidity,
+          description,
+        } = response.data;
         this.city = city;
         this.temp = temp;
         this.humidity = humidity;
@@ -75,10 +81,12 @@ export default {
   },
   mounted() {
     this.getData();
-    
+
     client.on("message", (topic, message) => {
-      console.log(topic)
-      const { city, temp, speed, humidity, description } = JSON.parse(message.toString());
+      console.log(topic);
+      const { city, temp, speed, humidity, description } = JSON.parse(
+        message.toString(),
+      );
       this.city = city;
       this.temp = temp;
       this.humidity = humidity;

@@ -58,6 +58,10 @@ const disconnectMqttClient = () => {
   }
 };
 
-
-
-export { weatherTopics, connectMqttClient, disconnectMqttClient, subscribeTopic, client };
+export {
+  weatherTopics,
+  connectMqttClient,
+  disconnectMqttClient,
+  subscribeTopic,
+  client,
+};

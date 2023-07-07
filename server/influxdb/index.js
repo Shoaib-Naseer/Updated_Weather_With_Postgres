@@ -28,7 +28,7 @@ function storeWeatherData(weatherData) {
   // Write the data point
   writeApi.writePoint(point);
 
-  writeApi.flush()
+  writeApi.flush();
 }
 
 const queryApi = influxDB.getQueryApi(org);
@@ -46,20 +46,17 @@ async function queryLatestWeatherData() {
         |> drop(columns: ["_time", "_start", "_stop", "_measurement"])
     `;
 
-    let result ;
+    let result;
 
     for await (const { values, tableMeta } of queryApi.iterateRows(fluxQuery)) {
       const rowObject = tableMeta.toObject(values);
       result = rowObject;
     }
-
     return result;
   } catch (error) {
     console.error("Error querying latest weather data:", error);
-    throw error;
   }
 }
-
 
 module.exports = {
   storeWeatherData,

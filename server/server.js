@@ -7,6 +7,7 @@ const cors = require("cors");
 const fetchWeatherAndPublish = require('./weatherStation');
 const { connectMqttClient, subscribeTopic, weatherTopics } = require("./utils/mqttConnection");
 const topic = require("./utils/constants");
+const { connectInfluxDB } = require("./influxdb/connection");
 
 const url = process.env.WEATHER_API
 
@@ -30,7 +31,6 @@ app.use("/weather", weatherRoutes);
 
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
   connectMqttClient();
   subscribeTopic(topic,  0);
   // Fetch weather data and publish it at regular intervals (e.g., every 1 hour)

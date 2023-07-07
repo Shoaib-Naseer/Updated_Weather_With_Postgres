@@ -1,10 +1,10 @@
 const mqtt = require("mqtt");
-const Weather = require("../models/weather");
+const { storeWeatherData, queryLatestWeatherData} = require("../influxdb");
 
 // MQTT broker connection options
 const brokerOptions = {
   host: "broker.emqx.io",
-  port: 8084,
+  port: 8883,
   endpoint: "mqtt",
   username: "shoaibNaseer",
   password: "12345",
@@ -35,7 +35,7 @@ const subscribeTopic = (topic, qos) => {
 
 // Connect to MQTT broker and handle events
 const connectMqttClient = () => {
-  const address = `${brokerOptions.ssl ? "wss" : "ws"}://${
+  const address = `${brokerOptions.ssl ? "mqtts" : "mqtt"}://${
     brokerOptions.host
   }:${brokerOptions.port}/${brokerOptions.endpoint}`;
   console.log(`Connecting to MQTT broker on ${address}`);
@@ -49,17 +49,21 @@ const connectMqttClient = () => {
     console.log("Connection failed!", error);
   });
 
-  client.on("message", (topic, message) => {
+  client.on("message", async (topic, message) => {
     const weatherData = JSON.parse(message.toString());
+   
     // Store the weatherData in the database
     if (topic === weatherTopics[0]) {
-      Weather.create(weatherData)
-        .then(() => {
-          console.log("Weather data stored in the database:");
-        })
-        .catch((error) => {
-          console.log("Error storing weather data in the database:", error);
-        });
+     try {
+      storeWeatherData(weatherData);
+      console.log("data successfully stored in influxdb");
+
+      await queryLatestWeatherData();
+      console.log("Fetched weather data")
+
+     } catch (error) {
+      console.log("error while storing weather data to influxdb",error);
+     }
     }
   });
 

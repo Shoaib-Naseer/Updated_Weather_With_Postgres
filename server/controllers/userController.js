@@ -41,11 +41,12 @@ exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
-  
+
     if (user) {
       const match = await bcrypt.compare(password, user.password);
-  
+
       if (match) {
+        // eslint-disable-next-line
         const { password: _, ...others } = user.toJSON();
         res.json({
           ...others,
@@ -60,7 +61,6 @@ exports.loginUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-  
 };
 
 exports.getAllUsers = async (req, res) => {
@@ -81,7 +81,9 @@ exports.getUserById = async (req, res) => {
       res.status(400).json({ error: "Invalid user Id" });
       return;
     }
-    const user = await User.findByPk(userId , {attributes:{exclude:['password']}})
+    const user = await User.findByPk(userId, {
+      attributes: { exclude: ["password"] },
+    });
     if (user) {
       res.json(user);
     } else {
@@ -103,7 +105,7 @@ exports.deleteUser = async (req, res) => {
     const user = await User.findByPk(userId);
 
     if (user) {
-      await user.destroy()
+      await user.destroy();
       res.json({ message: "User deleted" });
     } else {
       res.status(404).json({ error: "User does not exist" });
@@ -124,7 +126,7 @@ exports.updatePassword = async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       let hashedPassword = await bcrypt.hash(newPassword, salt);
 
-      await user.update({password:hashedPassword})
+      await user.update({ password: hashedPassword });
 
       res.json({ message: "Password update successful" });
     } else {

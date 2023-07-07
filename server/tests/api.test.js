@@ -3,6 +3,7 @@ const app = require("../server");
 const User = require("../models/user");
 require("@babel/register");
 
+// eslint-disable-next-line
 describe("API Tests", () => {
   const mockUser = {
     firstName: "John",
@@ -18,14 +19,16 @@ describe("API Tests", () => {
   const invalidPassword = "invalidpassword";
 
   // Before running the test suite, create a mock user for testing
+  // eslint-disable-next-line
   beforeAll(async () => {
-   // Clear all users from the database before each test
-   await User.destroy({ truncate: true });
+    // Clear all users from the database before each test
+    await User.destroy({ truncate: true });
   });
 
   // After running the test suite, delete the mock user
+  // eslint-disable-next-line
   afterAll(async () => {
-    await User.destroy({where:{id: userId} });
+    await User.destroy({ where: { id: userId } });
   });
 
   describe("POST /register", () => {
@@ -36,7 +39,7 @@ describe("API Tests", () => {
       expect(response.body.firstName).toBe(mockUser.firstName);
       expect(response.body.lastName).toBe(mockUser.lastName);
       expect(response.body.email).toBe(mockUser.email);
-      userId = response.body.id; 
+      userId = response.body.id;
     });
 
     it("should return an error for duplicate email", async () => {

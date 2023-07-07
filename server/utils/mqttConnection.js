@@ -1,5 +1,5 @@
 const mqtt = require("mqtt");
-const { storeWeatherData} = require("../influxdb");
+const { storeWeatherData, queryLatestWeatherData} = require("../influxdb");
 
 // MQTT broker connection options
 const brokerOptions = {
@@ -56,8 +56,11 @@ const connectMqttClient = () => {
     if (topic === weatherTopics[0]) {
      try {
       storeWeatherData(weatherData);
-     
       console.log("data successfully stored in influxdb");
+
+      await queryLatestWeatherData();
+      console.log("Fetched weather data")
+
      } catch (error) {
       console.log("error while storing weather data to influxdb",error);
      }

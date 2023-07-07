@@ -60,7 +60,8 @@ export default {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        const { city, temp, speed, humidity, description } = response.data;
+        console.log(response.data);
+        const { city, temperature: temp, speed, humidity, description } = response.data[0];
         this.city = city;
         this.temp = temp;
         this.humidity = humidity;
@@ -78,12 +79,12 @@ export default {
     
     client.on("message", (topic, message) => {
       console.log(topic)
-      const { city, temp, speed, humidity, description } = JSON.parse(message.toString());
-      this.city = city;
-      this.temp = temp;
-      this.humidity = humidity;
-      this.speed = speed;
-      this.description = description;
+      // const { city, temp, speed, humidity, description } = JSON.parse(message.toString());
+      // this.city = city;
+      // this.temp = temp;
+      // this.humidity = humidity;
+      // this.speed = speed;
+      // this.description = description;
       console.log(JSON.parse(message.toString()));
     });
   },

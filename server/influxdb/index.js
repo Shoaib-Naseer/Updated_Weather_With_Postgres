@@ -45,32 +45,24 @@ async function queryLatestWeatherData() {
         |> filter(fn: (r) => r._measurement == "weather")
         |> last()
         |> sort(desc: true)
+        |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
+        |> drop(columns: ["_time", "_start", "_stop", "_measurement"])
     `;
 
-    const myQuery = async () => {
-      let resultArray = [];
-      for await (const { values, tableMeta } of queryApi.iterateRows(
-        fluxQuery
-      )) {
-        const o = tableMeta.toObject(values);
-        resultArray.push(o);
-      }
-      return resultArray;
-    };
+    const result = [];
 
-    const result = await myQuery();
-    const combinedObject = result.reduce((obj, resultObj) => {
-      const field = resultObj._field;
-      const value = resultObj._value;
-      obj[field] = value;
-      return obj;
-    }, {});
+    for await (const { values, tableMeta } of queryApi.iterateRows(fluxQuery)) {
+      const rowObject = tableMeta.toObject(values);
+      result.push(rowObject);
+    }
 
-    return combinedObject;
+    return result;
   } catch (error) {
     console.error("Error querying latest weather data:", error);
+    throw error;
   }
 }
+
 
 module.exports = {
   storeWeatherData,

@@ -32,7 +32,7 @@ const createPoints = (data) => {
   return point;
 };
 
-exports.insertData = (data) => {
+exports.insertDataInflux = (data) => {
   try {
     const point = createPoints(data);
     writeApi.writePoint(point);

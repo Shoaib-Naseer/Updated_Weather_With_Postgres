@@ -1,4 +1,7 @@
-const { bucket } = require("../config");
+const { influx } = require("../config");
+
+const {bucket} = influx;
+
 exports.query = `
     from(bucket: "${bucket}")
       |> range(start: -10s)

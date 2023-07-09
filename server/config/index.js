@@ -3,13 +3,18 @@ require("dotenv").config();
 //PORT
 const port = process.env.PORT;
 
-//InfluxDb.config
-const url = process.env.INFLUX_URL;
-const token = process.env.INFLUX_TOKEN;
-const org = process.env.INFLUX_ORG;
-const bucket = process.env.INFLUX_BUCKET;
+// JWT credentials
+const jwtCredentials = {
+    jwtSecret : process.env.JWT_SECRET
+}
 
+//InfluxDb.config
+const influx = { url : process.env.INFLUX_URL,
+ token : process.env.INFLUX_TOKEN,
+ org : process.env.INFLUX_ORG,
+ bucket : process.env.INFLUX_BUCKET,
+}
 //Weather Api
 const weatherApi = process.env.WEATHER_API;
 
-module.exports = { url, token, org, bucket, weatherApi, port };
+module.exports = { influx, jwtCredentials, port };

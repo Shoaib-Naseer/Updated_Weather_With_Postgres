@@ -6,13 +6,13 @@ const {
 
 // MQTT broker connection options
 const brokerOptions = {
-  host: "broker.emqx.io",
-  port: 8883,
-  endpoint: "mqtt",
-  username: "shoaibNaseer",
-  password: "12345",
+  host: "localhost",
+  port: 1883,
+  endpoint: "",
+  username: "shoaib",
+  password: "password",
   clientId: "emqx_nodejs_" + Math.random().toString(16).substring(2, 8),
-  ssl: true,
+  ssl: false,
 };
 
 // Weather topics to subscribe to

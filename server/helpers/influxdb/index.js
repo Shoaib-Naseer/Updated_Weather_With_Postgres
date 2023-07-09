@@ -1,5 +1,5 @@
 const { query } = require("../../services/influx_queries");
-const { insertData, queryData } = require("./influxHelpers");
+const { insertDataInflux, queryData } = require("./influxHelpers");
 require("dotenv").config();
 
 function storeWeatherData(weatherData) {
@@ -22,7 +22,7 @@ function storeWeatherData(weatherData) {
       timestamp: new Date(),
     };
 
-    insertData(data);
+    insertDataInflux(data);
   } catch (error) {
     console.log(error);
   }

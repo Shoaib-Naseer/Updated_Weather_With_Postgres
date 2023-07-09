@@ -1,6 +1,8 @@
 const { InfluxDB } = require("@influxdata/influxdb-client");
 
-const { url, token, org, bucket } = require("../../config");
+const { influx } = require("../../config");
+
+const {url,token,org,bucket} = influx;
 
 const influxDB = new InfluxDB({ url, token });
 

@@ -1,29 +1,34 @@
-const { default: axios } = require("axios");
 const { publishWeatherData } = require("./utils/mqttConnection");
 
-const fetchWeatherAndPublish = async (url, topic) => {
+const fetchWeatherAndPublish = async (topic) => {
   try {
-    const response = await axios.get(url);
-    const data = response.data;
 
-    const { name: city } = data;
-    const { icon, description } = data.weather[0];
-    const { temp, humidity, pressure } = data.main;
-    const { speed } = data.wind;
+    const city = 'islamabad'
+    const description = 'Cloudy Weather'
+    function generateRandomValue(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    const temp = generateRandomValue(-20, 40);
+    
+    const humidity = generateRandomValue(0, 100);
+    
+    const pressure = generateRandomValue(900, 1100);
+    
+    const speed = Math.random() * 20;
+    
 
     const weatherData = {
       city,
       temp,
       humidity,
       speed,
-      icon,
       description,
       pressure,
     };
     // Publish weather data to a specific topic
     publishWeatherData(topic, weatherData);
 
-    console.log(weatherData);
   } catch (error) {
     console.log("Error fetching weather data:", error);
   }

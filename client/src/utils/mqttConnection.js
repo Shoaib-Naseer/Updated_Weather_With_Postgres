@@ -1,13 +1,12 @@
 import mqtt from "mqtt/dist/mqtt";
+import mqttOptions from "config";
 // MQTT broker connection options
 const brokerOptions = {
-  host: "broker.emqx.io",
-  port: 8084,
-  endpoint: "mqtt",
-  username: "shoaibNaseer",
-  password: "12345",
-  clientId: "emqx_nodejs_" + Math.random().toString(16).substring(2, 8),
-  ssl: true,
+  host: mqttOptions.host,
+  port: mqttOptions.port,
+  password: mqttOptions.password,
+  clientId: mqttOptions.clientId,
+  ssl: mqttOptions.ssl,
 };
 
 // Weather topics to subscribe to
@@ -35,7 +34,7 @@ const subscribeTopic = (topic, qos) => {
 const connectMqttClient = () => {
   const address = `${brokerOptions.ssl ? "wss" : "ws"}://${
     brokerOptions.host
-  }:${brokerOptions.port}/${brokerOptions.endpoint}`;
+  }:${brokerOptions.port}`;
   console.log(`Connecting to MQTT broker on ${address}`);
   client = mqtt.connect(address, brokerOptions);
 
@@ -59,7 +58,6 @@ const disconnectMqttClient = () => {
 };
 
 export {
-  weatherTopics,
   connectMqttClient,
   disconnectMqttClient,
   subscribeTopic,

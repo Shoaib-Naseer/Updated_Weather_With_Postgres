@@ -1,12 +1,18 @@
 const express = require("express");
-const { connectDatabase } = require("./config/database");
+
+const { connectDatabase } = require("./utils/database");
+const topic = require("./utils/constants");
+
 const userRoutes = require("./routes/userRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
-const cors = require("cors");
+
+
 const fetchWeatherAndPublish = require("./weatherStation");
 const { connectMqttClient, subscribeTopic } = require("./utils/mqttConnection");
-const topic = require("./utils/constants");
-const { weatherApi, port: PORT } = require("./config");
+
+const { port : PORT } = require("./config");
+const cors = require("cors");
+
 
 const app = express();
 
@@ -25,9 +31,9 @@ app.use("/weather", weatherRoutes);
 app.listen(port, () => {
   connectMqttClient();
   subscribeTopic(topic, 0);
-  // Fetch weather data and publish it at regular intervals (e.g., every 1 hour)
+  // Publish Weather at regular intervals (e.g., every 1 hour)
   setInterval(async () => {
-    await fetchWeatherAndPublish(weatherApi, topic);
+    await fetchWeatherAndPublish( topic);
   }, 5000); // 5000 milliseconds = 5 seconds
 });
 

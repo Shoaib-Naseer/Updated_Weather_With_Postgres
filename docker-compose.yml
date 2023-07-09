@@ -6,6 +6,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    image: weather-server
     ports:
       - 5000:5000
     container_name: weather_server
@@ -20,6 +21,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+    image: weather-frontend
     ports:
       - 3001:3001
     container_name: weather_frontend
